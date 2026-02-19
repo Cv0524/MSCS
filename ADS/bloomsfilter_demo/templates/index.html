@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Bloom Filter Demo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <div class="top_title">
+        <h1>Bloom Filter - Christian R. Verra</h1>
+    </div>
+
+    <div class="app-card">
+        <div class="bit-array">
+            {% for bit in bit_array %}
+                <div class="bit-box {% if bit == 1 %}active{% endif %} {% if loop.index0 in highlight_indices %}highlight{% endif %}">
+                    {{ bit }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <form method="POST" action="/" class="input-group">
+            <input type="text" name="add_item" placeholder="Enter a name to add..." autocomplete="off" autofocus>
+            <button type="submit" name="action" value="add" class="btn-add">Add</button>
+        </form>
+
+        <form method="POST" action="/" class="input-group">
+            <input type="text" name="check_item" placeholder="Enter a name to check..." autocomplete="off">
+            <button type="submit" name="action" value="check" class="btn-check">Check</button>
+            <button type="submit" name="action" value="reset" class="btn-reset">Reset</button>
+        </form>
+        
+        <div class="check-result">
+            {% if check_result == 'possibly_in' %}
+                <span class="result-in">"{{ checked_item }}" is POSSIBLY IN the set.</span>
+            {% elif check_result == 'definitely_not' %}
+                <span class="result-out">"{{ checked_item }}" is DEFINITELY NOT in the set.</span>
+            {% endif %}
+        </div>
+
+        <div class="added-elements-container">
+            <div class="section-title">ADDED ELEMENTS</div>
+            <div class="element-list">
+                {% if added_elements %}
+                    {% for el in added_elements %}
+                        <div class="element-tag">{{ el }}</div>
+                    {% endfor %}
+                {% else %}
+                    <span style="color: var(--text-muted); font-size: 14px;">None</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
